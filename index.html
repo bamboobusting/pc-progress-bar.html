@@ -58,12 +58,11 @@
     <div class="progress-bar">
         <div class="progress" id="progress"></div>
     </div>
-    <div class="info" id="info">$0 saved out of $1000</div>
-    <button onclick="addFunds(50)">Add $50</button>
+    <button onclick="addFunds(50)">Add 50</button>
 
     <script>
-        let savedAmount = 0;
-        const goalAmount = 1000;
+        let savedAmount = 3000;
+        const goalAmount = 23000;
 
         function updateProgress() {
             const progress = document.getElementById('progress');
@@ -71,7 +70,7 @@
 
             const progressPercentage = (savedAmount / goalAmount) * 100;
             progress.style.width = progressPercentage + '%';
-            info.textContent = `$${savedAmount} saved out of $${goalAmount}`;
+            info.textContent = `${savedAmount} saved out of ${goalAmount}`;
         }
 
         function addFunds(amount) {
