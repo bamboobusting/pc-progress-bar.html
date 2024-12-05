@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
-    <!-- Corrected font link -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Updated reliable retro font -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> <!-- Retro font -->
     <style>
         body {
             display: flex;
@@ -14,7 +14,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Press Start 2P', cursive, sans-serif; /* Retro font with fallback */
+            font-family: 'VT323', monospace; /* Retro font with fallback */
             background-color: #e0f7fa; /* Very light blue */
             color: #333;
         }
@@ -61,44 +61,47 @@
         }
         input[type="number"] {
             padding: 10px;
-            font-size: 1rem;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-        }
-        .heart {
-            color: #60a5fa;
-            font-size: 2rem;
+            font-size: 1.2rem;
             margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
         }
         .gif-container {
             margin-top: 20px;
+            text-align: center;
+        }
+        .gif-container img {
+            width: 100px;
+            height: auto;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
     <h1>PC Chan Progress</h1>
-    <div class="gif-container">
-        <img src="your-transparent-gif-url-here.gif" alt="Cute GIF" width="100" height="100" /> <!-- Replace with your GIF URL -->
-    </div>
     <div class="progress-bar">
         <div class="progress" id="progress"></div>
     </div>
     <div class="info" id="info">฿0 saved out of ฿23000</div>
+    
+    <!-- Input for custom amount -->
+    <input type="number" id="customAmount" placeholder="Enter amount" />
+
+    <!-- Buttons -->
     <button onclick="addFunds(300)">Add ฿300</button>
-    <input type="number" id="customAmount" placeholder="Enter custom amount" />
-    <button onclick="addCustomFunds()">Add Custom Amount</button>
-    <button onclick="removeCustomFunds()">Remove Custom Amount</button> <!-- New remove button -->
-    <button onclick="undoFunds(300)">Undo ฿300</button> <!-- Corrected the text -->
-    
-    <div class="heart">💖</div> <!-- Cute heart -->
-    
+    <button onclick="removeCustomAmount()">Remove Custom Amount</button>
+
+    <button onclick="undoFunds(300)">Undo ฿300</button>
+
+    <!-- GIF container for cute transparent gif -->
+    <div class="gif-container">
+        <img src="https://cdna.artstation.com/p/assets/images/images/048/375/270/original/maria-moreno-ezgif-com-gif-maker.gif?1649877491" alt="Cute GIF" />
+    </div>
+
     <script>
+        let savedAmount = 3000;
         const goalAmount = 23000;
-        let savedAmount = parseInt(localStorage.getItem('savedAmount')) || 0;
-        let transactionHistory = JSON.parse(localStorage.getItem('transactionHistory')) || [];
-        let customSavedAmount = 0; // Track custom amount separately
+        let transactionHistory = [];
 
         function updateProgress() {
             const progress = document.getElementById('progress');
@@ -113,27 +116,14 @@
             if (savedAmount < goalAmount) {
                 transactionHistory.push(amount);
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
-                updateLocalStorage();
                 updateProgress();
             }
         }
 
-        function addCustomFunds() {
-            const customAmount = parseInt(document.getElementById('customAmount').value);
-            if (customAmount > 0 && savedAmount + customAmount <= goalAmount) {
-                customSavedAmount += customAmount; // Add to custom amount
-                savedAmount += customAmount;
-                document.getElementById('customAmount').value = ''; // Clear the input field
-                updateLocalStorage();
-                updateProgress();
-            }
-        }
-
-        function removeCustomFunds() {
-            if (customSavedAmount > 0) {
-                savedAmount -= customSavedAmount; // Remove custom amount from total
-                customSavedAmount = 0;
-                updateLocalStorage();
+        function removeCustomAmount() {
+            const customAmount = document.getElementById('customAmount').value;
+            if (customAmount > 0) {
+                savedAmount = Math.max(savedAmount - customAmount, 0);
                 updateProgress();
             }
         }
@@ -142,14 +132,8 @@
             if (transactionHistory.length > 0) {
                 const lastTransaction = transactionHistory.pop();
                 savedAmount = Math.max(savedAmount - lastTransaction, 0);
-                updateLocalStorage();
                 updateProgress();
             }
-        }
-
-        function updateLocalStorage() {
-            localStorage.setItem('savedAmount', savedAmount);
-            localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
         }
 
         updateProgress();
