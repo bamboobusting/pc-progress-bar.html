@@ -13,7 +13,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #e0f7fa; /* Very light blue */
             color: #333;
         }
         h1 {
@@ -43,13 +43,13 @@
             font-size: 1rem;
             border: none;
             border-radius: 5px;
-            background: #4caf50;
+            background: #2196F3; /* Blue background */
             color: white;
             cursor: pointer;
             transition: background 0.3s;
         }
         button:hover {
-            background: #45a049;
+            background: #1976D2; /* Darker blue on hover */
         }
         input[type="number"] {
             padding: 10px;
@@ -69,7 +69,7 @@
     <button onclick="addFunds(300)">Add ฿300</button>
     <input type="number" id="customAmount" placeholder="Enter custom amount" />
     <button onclick="addCustomFunds()">Add Custom Amount</button>
-    <button onclick="undoFunds(500)">Undo ฿500</button>
+    <button onclick="undoFunds(300)">Undo ฿300</button> <!-- Corrected the text -->
 
     <script>
         const goalAmount = 23000;
