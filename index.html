@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
@@ -12,7 +13,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Press Start 2P', cursive;
             background-color: #e0f7fa; /* Very light blue */
             color: #333;
         }
@@ -87,6 +88,8 @@
 
     <!-- Buttons -->
     <button onclick="addFunds(300)">Add ฿300</button>
+<button onclick="addCustomFunds()">Add Custom ฿</button>
+
     <button onclick="removeCustomAmount()">Remove Custom Amount</button>
 
     <button onclick="undoFunds(300)">Undo ฿300</button>
@@ -133,6 +136,17 @@
                 updateProgress();
             }
         }
+function addCustomFunds() {
+    const customAmount = document.getElementById('customAmount').value;
+    if (customAmount && !isNaN(customAmount) && customAmount > 0) {
+        savedAmount = Math.min(savedAmount + parseFloat(customAmount), goalAmount);
+        transactionHistory.push(customAmount); // Save the custom transaction for undo
+        updateProgress();
+    } else {
+        alert("Please enter a valid amount.");
+    }
+}
+
 
         // Function to undo last transaction
         function undoFunds(amount) {
