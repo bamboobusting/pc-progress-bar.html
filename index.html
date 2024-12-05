@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
-    <!-- Updated reliable retro font -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> <!-- Retro font -->
     <style>
         body {
             display: flex;
@@ -14,7 +12,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'VT323', monospace; /* Retro font with fallback */
+            font-family: 'Courier New', Courier, monospace; /* Retro font */
             background-color: #e0f7fa; /* Very light blue */
             color: #333;
         }
@@ -95,13 +93,13 @@
 
     <!-- GIF container for cute transparent gif -->
     <div class="gif-container">
-        <img src="https://cdna.artstation.com/p/assets/images/images/048/375/270/original/maria-moreno-ezgif-com-gif-maker.gif?1649877491" alt="Cute GIF" />
+        <img src="your-transparent-gif-url-here.gif" alt="Cute GIF" />
     </div>
 
     <script>
-        let savedAmount = 3000;
         const goalAmount = 23000;
-        let transactionHistory = [];
+        let savedAmount = parseInt(localStorage.getItem("savedAmount")) || 3000; // Load saved amount or default to 3000
+        let transactionHistory = JSON.parse(localStorage.getItem("transactionHistory")) || [];
 
         function updateProgress() {
             const progress = document.getElementById('progress');
@@ -110,6 +108,10 @@
             const progressPercentage = (savedAmount / goalAmount) * 100;
             progress.style.width = progressPercentage + '%';
             info.textContent = `฿${savedAmount} saved out of ฿${goalAmount}`;
+
+            // Save to localStorage
+            localStorage.setItem("savedAmount", savedAmount);
+            localStorage.setItem("transactionHistory", JSON.stringify(transactionHistory));
         }
 
         function addFunds(amount) {
