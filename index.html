@@ -58,11 +58,14 @@
     <div class="progress-bar">
         <div class="progress" id="progress"></div>
     </div>
-    <button onclick="addFunds(50)">Add 50</button>
+    <div class="info" id="info">฿0 saved out of ฿23000</div>
+    <button onclick="addFunds(500)">Add ฿500</button>
+    <button onclick="undoFunds(500)">Undo ฿500</button>
 
     <script>
         let savedAmount = 3000;
         const goalAmount = 23000;
+        let transactionHistory = [];
 
         function updateProgress() {
             const progress = document.getElementById('progress');
@@ -70,12 +73,21 @@
 
             const progressPercentage = (savedAmount / goalAmount) * 100;
             progress.style.width = progressPercentage + '%';
-            info.textContent = `${savedAmount} saved out of ${goalAmount}`;
+            info.textContent = `฿${savedAmount} saved out of ฿${goalAmount}`;
         }
 
         function addFunds(amount) {
             if (savedAmount < goalAmount) {
+                transactionHistory.push(amount);
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
+                updateProgress();
+            }
+        }
+
+        function undoFunds(amount) {
+            if (transactionHistory.length > 0) {
+                const lastTransaction = transactionHistory.pop();
+                savedAmount = Math.max(savedAmount - lastTransaction, 0);
                 updateProgress();
             }
         }
