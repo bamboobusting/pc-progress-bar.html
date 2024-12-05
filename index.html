@@ -29,7 +29,7 @@
         }
         .progress {
             height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            background: linear-gradient(90deg, #a3c4f3, #78aaff); /* Pastel blue gradient */
             width: 0%;
             transition: width 0.4s ease;
         }
@@ -51,6 +51,13 @@
         button:hover {
             background: #45a049;
         }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1rem;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -59,14 +66,15 @@
         <div class="progress" id="progress"></div>
     </div>
     <div class="info" id="info">฿0 saved out of ฿23000</div>
-    <button onclick="addFunds(500)">Add ฿500</button>
+    <button onclick="addFunds(300)">Add ฿300</button>
+    <input type="number" id="customAmount" placeholder="Enter custom amount" />
+    <button onclick="addCustomFunds()">Add Custom Amount</button>
     <button onclick="undoFunds(500)">Undo ฿500</button>
-    
 
     <script>
-        let savedAmount = 3000;
         const goalAmount = 23000;
-        let transactionHistory = [];
+        let savedAmount = parseInt(localStorage.getItem('savedAmount')) || 0;
+        let transactionHistory = JSON.parse(localStorage.getItem('transactionHistory')) || [];
 
         function updateProgress() {
             const progress = document.getElementById('progress');
@@ -81,6 +89,18 @@
             if (savedAmount < goalAmount) {
                 transactionHistory.push(amount);
                 savedAmount = Math.min(savedAmount + amount, goalAmount);
+                updateLocalStorage();
+                updateProgress();
+            }
+        }
+
+        function addCustomFunds() {
+            const customAmount = parseInt(document.getElementById('customAmount').value);
+            if (customAmount > 0 && savedAmount + customAmount <= goalAmount) {
+                transactionHistory.push(customAmount);
+                savedAmount += customAmount;
+                document.getElementById('customAmount').value = ''; // Clear the input field
+                updateLocalStorage();
                 updateProgress();
             }
         }
@@ -89,8 +109,14 @@
             if (transactionHistory.length > 0) {
                 const lastTransaction = transactionHistory.pop();
                 savedAmount = Math.max(savedAmount - lastTransaction, 0);
+                updateLocalStorage();
                 updateProgress();
             }
+        }
+
+        function updateLocalStorage() {
+            localStorage.setItem('savedAmount', savedAmount);
+            localStorage.setItem('transactionHistory', JSON.stringify(transactionHistory));
         }
 
         updateProgress();
