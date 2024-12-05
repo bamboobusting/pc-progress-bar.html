@@ -12,7 +12,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace; /* Retro font */
+            font-family: 'Courier New', Courier, monospace;
             background-color: #e0f7fa; /* Very light blue */
             color: #333;
         }
@@ -93,14 +93,16 @@
 
     <!-- GIF container for cute transparent gif -->
     <div class="gif-container">
-        <img src="your-transparent-gif-url-here.gif" alt="Cute GIF" />
+        <img src="https://cdna.artstation.com/p/assets/images/images/048/375/270/original/maria-moreno-ezgif-com-gif-maker.gif?1649877491" alt="Cute GIF" />
     </div>
 
     <script>
+        // Set goal and retrieve saved amount from local storage, or default to 3000
         const goalAmount = 23000;
-        let savedAmount = parseInt(localStorage.getItem("savedAmount")) || 3000; // Load saved amount or default to 3000
+        let savedAmount = parseInt(localStorage.getItem("savedAmount")) || 3000;
         let transactionHistory = JSON.parse(localStorage.getItem("transactionHistory")) || [];
 
+        // Function to update the progress bar and save data to localStorage
         function updateProgress() {
             const progress = document.getElementById('progress');
             const info = document.getElementById('info');
@@ -109,11 +111,12 @@
             progress.style.width = progressPercentage + '%';
             info.textContent = `฿${savedAmount} saved out of ฿${goalAmount}`;
 
-            // Save to localStorage
+            // Save the current saved amount and transaction history to localStorage
             localStorage.setItem("savedAmount", savedAmount);
             localStorage.setItem("transactionHistory", JSON.stringify(transactionHistory));
         }
 
+        // Function to add funds
         function addFunds(amount) {
             if (savedAmount < goalAmount) {
                 transactionHistory.push(amount);
@@ -122,14 +125,16 @@
             }
         }
 
+        // Function to remove custom amount
         function removeCustomAmount() {
-            const customAmount = document.getElementById('customAmount').value;
+            const customAmount = parseInt(document.getElementById('customAmount').value);
             if (customAmount > 0) {
                 savedAmount = Math.max(savedAmount - customAmount, 0);
                 updateProgress();
             }
         }
 
+        // Function to undo last transaction
         function undoFunds(amount) {
             if (transactionHistory.length > 0) {
                 const lastTransaction = transactionHistory.pop();
@@ -138,6 +143,7 @@
             }
         }
 
+        // Initialize and show the initial progress
         updateProgress();
     </script>
 </body>
