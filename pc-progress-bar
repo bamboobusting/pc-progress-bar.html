@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Chan Progress</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 80%;
+            background: #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+            height: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        .info {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>PC Chan Progress</h1>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    <div class="info" id="info">$0 saved out of $1000</div>
+    <button onclick="addFunds(50)">Add $50</button>
+
+    <script>
+        let savedAmount = 0;
+        const goalAmount = 1000;
+
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            const info = document.getElementById('info');
+
+            const progressPercentage = (savedAmount / goalAmount) * 100;
+            progress.style.width = progressPercentage + '%';
+            info.textContent = `$${savedAmount} saved out of $${goalAmount}`;
+        }
+
+        function addFunds(amount) {
+            if (savedAmount < goalAmount) {
+                savedAmount = Math.min(savedAmount + amount, goalAmount);
+                updateProgress();
+            }
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>
