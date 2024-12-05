@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Chan Progress</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -12,12 +13,16 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #e0f7fa; /* Very light blue */
             color: #333;
         }
         h1 {
             margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #ff4081; /* Cute pink color */
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
         .progress-bar {
             width: 80%;
@@ -35,12 +40,14 @@
         }
         .info {
             margin-top: 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff4081; /* Pink color */
         }
         button {
             margin-top: 20px;
             padding: 10px 20px;
-            font-size: 1rem;
+            font-size: 1.2rem;
             border: none;
             border-radius: 5px;
             background: #2196F3; /* Blue background */
@@ -57,11 +64,45 @@
             margin-top: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            width: 200px;
+        }
+        .kawaii-bow {
+            width: 30px;
+            height: 30px;
+            background-color: pink;
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+        .kawaii-bow::before, .kawaii-bow::after {
+            content: "";
+            position: absolute;
+            background-color: pink;
+            height: 20px;
+            width: 10px;
+            border-radius: 5px;
+        }
+        .kawaii-bow::before {
+            top: -10px;
+            left: 2px;
+            transform: rotate(45deg);
+        }
+        .kawaii-bow::after {
+            top: 2px;
+            left: -10px;
+            transform: rotate(-45deg);
+        }
+        .heart {
+            color: #ff4081;
+            font-size: 2rem;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <h1>PC Chan Progress</h1>
+    <div class="kawaii-bow"></div> <!-- Kawaii Bow -->
     <div class="progress-bar">
         <div class="progress" id="progress"></div>
     </div>
@@ -69,12 +110,16 @@
     <button onclick="addFunds(300)">Add ฿300</button>
     <input type="number" id="customAmount" placeholder="Enter custom amount" />
     <button onclick="addCustomFunds()">Add Custom Amount</button>
+    <button onclick="removeCustomFunds()">Remove Custom Amount</button> <!-- New remove button -->
     <button onclick="undoFunds(300)">Undo ฿300</button> <!-- Corrected the text -->
-
+    
+    <div class="heart">💖</div> <!-- Cute heart -->
+    
     <script>
         const goalAmount = 23000;
         let savedAmount = parseInt(localStorage.getItem('savedAmount')) || 0;
         let transactionHistory = JSON.parse(localStorage.getItem('transactionHistory')) || [];
+        let customSavedAmount = 0; // Track custom amount separately
 
         function updateProgress() {
             const progress = document.getElementById('progress');
@@ -97,9 +142,18 @@
         function addCustomFunds() {
             const customAmount = parseInt(document.getElementById('customAmount').value);
             if (customAmount > 0 && savedAmount + customAmount <= goalAmount) {
-                transactionHistory.push(customAmount);
+                customSavedAmount += customAmount; // Add to custom amount
                 savedAmount += customAmount;
                 document.getElementById('customAmount').value = ''; // Clear the input field
+                updateLocalStorage();
+                updateProgress();
+            }
+        }
+
+        function removeCustomFunds() {
+            if (customSavedAmount > 0) {
+                savedAmount -= customSavedAmount; // Remove custom amount from total
+                customSavedAmount = 0;
                 updateLocalStorage();
                 updateProgress();
             }
